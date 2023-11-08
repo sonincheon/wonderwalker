@@ -64,4 +64,36 @@ public boolean SingupIdCheck(String id) {
     Common.close(conn);
     return isNotReg;
 }
+
+
+    // 회원 가입
+    public boolean SignUp(String userid, String userPwd, String nick, String userName, String addr, String phone, String email){
+        int result = 0;
+        String sql = "Insert into USERINFO (USERID,NICK,USERPW,USERNAME,ADDR,PHONENUM,EMAIL) values (?,?,?,?,?,?,?)";
+        try {
+            conn = Common.getConnection();
+            pStmt = conn.prepareStatement(sql);
+            pStmt.setString(1, userid);
+            pStmt.setString(2, nick);
+            pStmt.setString(3, userPwd);
+            pStmt.setString(4, userName);
+            pStmt.setString(5, addr);
+            pStmt.setString(6, phone);
+            pStmt.setString(7, email);
+            result = pStmt.executeUpdate();
+            System.out.println("Yes?" + result);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Common.close(pStmt);
+        Common.close(conn);
+
+        if(result == 1) return true;
+        else return false;
+    }
+
+
+
+
 }

@@ -18,13 +18,12 @@ public class UserControlloer {
     @PostMapping("/login")
     //I아이디,비밀번호를 받아와서 데이터베이스와
     public ResponseEntity<Boolean> memberLogin(@RequestBody Map<String, String> loginData) {
-        String id = loginData.get("id");
-        String pwd = loginData.get("pwd");
-        System.out.println("ID : " + id);
-        System.out.println("PWD : " + pwd);
+        String userid = loginData.get("id");
+        String userPwd = loginData.get("pwd");
+        System.out.println("ID : " + userid);
+        System.out.println("PWD : " + userPwd);
         UserInfoDAO dao = new UserInfoDAO();
-        boolean result = dao.loginCheck(id, pwd);
-        System.out.println("xxzz"+result);
+        boolean result = dao.loginCheck(userid, userPwd);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
@@ -37,16 +36,18 @@ public class UserControlloer {
         return new ResponseEntity<>(isTrue, HttpStatus.OK);
     }
 
-    @PostMapping("/idcheck")
-    public ResponseEntity<Boolean> signup(@RequestBody Map<String, String>  userInfo) {
-        System.out.println("회원 가입 여부 확인 ID : " + userInfo.get("id"));
-        System.out.println("회원 가입 여부 확인 ID : " + userInfo.get("nick"));
-        System.out.println("회원 가입 여부 확인 ID : " + userInfo.get("name"));
-        System.out.println("회원 가입 여부 확인 ID : " + userInfo.get("add"));
-        System.out.println("회원 가입 여부 확인 ID : " + userInfo.get("phone"));
-        System.out.println("회원 가입 여부 확인 ID : " + userInfo.get("mail"));
+    @PostMapping("/signup")
+    public ResponseEntity<Boolean> SignUp(@RequestBody Map<String, String>  userInfo) {
+        System.out.println("olol22222xxxxx");
+    String userid=userInfo.get("id");
+    String userPwd=userInfo.get("pwd");
+    String nick=userInfo.get("nick");
+    String userName=userInfo.get("name");
+    String addr=userInfo.get("addr");
+    String phone=userInfo.get("phone");
+    String email=userInfo.get("email");
         UserInfoDAO dao = new UserInfoDAO();
-        boolean isTrue = dao.SingupIdCheck("test");
+        boolean isTrue = dao.SignUp(userid,userPwd,nick,userName,addr,phone,email);
         System.out.println(isTrue);
         return new ResponseEntity<>(isTrue, HttpStatus.OK);
     }
