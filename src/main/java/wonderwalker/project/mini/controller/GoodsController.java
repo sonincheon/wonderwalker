@@ -15,7 +15,6 @@ import java.util.List;
 @RequestMapping("/Goods")
 // 그룹을 위한 Mapping
 public class GoodsController {
-    //GET : 회원 조회
     @GetMapping("")
     //조회정보 가져올떈 리퀘어파람으로 id값 뺴오기
     public ResponseEntity<List<GoodsVO>> GoodsList(@RequestParam String world){
