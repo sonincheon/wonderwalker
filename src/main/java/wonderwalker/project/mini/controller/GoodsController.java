@@ -16,13 +16,24 @@ import java.util.List;
 // 그룹을 위한 Mapping
 public class GoodsController {
     //GET : 회원 조회
-    @GetMapping("/korea")
+    @GetMapping("")
     //조회정보 가져올떈 리퀘어파람으로 id값 뺴오기
     public ResponseEntity<List<GoodsVO>> GoodsList(@RequestParam String world){
 
         System.out.println(" world :  " + world);
         GoodsDAO dao =new GoodsDAO(); //로그인
         List<GoodsVO> list = dao.GoodsSelect(world);
+        //맴버 리스트 리턴해줌
+        return new ResponseEntity<>(list,HttpStatus.OK);
+    }
+
+    @GetMapping("info")
+    //조회정보 가져올떈 리퀘어파람으로 id값 뺴오기
+    public ResponseEntity<List<GoodsVO>> GoodsInfo(@RequestParam String itemCode){
+
+        System.out.println("itemcode: "+itemCode);
+        GoodsDAO dao =new GoodsDAO(); //로그인
+        List<GoodsVO> list = dao.GoodsInfo(itemCode);
         //맴버 리스트 리턴해줌
         return new ResponseEntity<>(list,HttpStatus.OK);
     }

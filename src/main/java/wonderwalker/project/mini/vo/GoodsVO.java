@@ -6,9 +6,9 @@ import java.sql.Date;
 @Getter
 @Setter
 public class GoodsVO {
-    private Integer item_num;
+    private String item_num;
     private String i_world;
-    private Integer price;
+    private String price;
     private String tag;
     private String i_name;
     private String title;
