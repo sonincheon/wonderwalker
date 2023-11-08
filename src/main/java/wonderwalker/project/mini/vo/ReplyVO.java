@@ -16,6 +16,4 @@ public class ReplyVO {
     private String travelValue;
     private String travelNum;
     private int boardNum;
-
-
 }
