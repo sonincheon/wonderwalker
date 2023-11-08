@@ -8,4 +8,10 @@ import lombok.Setter;
 public class UserInfoVO {
     private  String userId;
     private  String nick;
+    private  String userPw;
+    private  String userName;
+    private  String addr;
+    private  String phoneNum;
+    private  String Email;
+
 }
