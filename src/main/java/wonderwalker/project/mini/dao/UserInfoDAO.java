@@ -1,8 +1,10 @@
 package wonderwalker.project.mini.dao;
 import wonderwalker.project.mini.comon.Common;
+import wonderwalker.project.mini.vo.UserInfoVO;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -93,6 +95,47 @@ public boolean SingupIdCheck(String id) {
         else return false;
     }
 
+
+    // 회원정보 조회
+    public List<UserInfoVO> Userinfo(String id) {
+        List<UserInfoVO> list = new ArrayList<>();
+        String sql = null;
+        try {
+            conn = Common.getConnection();
+            stmt = conn.createStatement();
+
+            sql = "SELECT * FROM USERINFO WHERE USERID = " + "'" + id + "'";
+            rs = stmt.executeQuery(sql);
+            while(rs.next()) {
+                String userid = rs.getString("USERID");
+                String nick = rs.getString("NICK");
+                String abab = rs.getString("USERNAME");
+                String addr = rs.getString("ADDR");
+                String phonel = rs.getString("PHONENUM");
+                String email = rs.getString("EMAIL");
+
+
+                UserInfoVO vo = new UserInfoVO();
+                vo.setUserId(userid);
+                vo.setUserName(abab);
+                vo.setNick(nick);
+                vo.setAddr(addr);
+                vo.setPhoneNum(phonel);
+                vo.setEmail(email);
+                list.add(vo);
+
+
+
+
+            }
+            Common.close(rs);
+            Common.close(stmt);
+            Common.close(conn);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 
 
 

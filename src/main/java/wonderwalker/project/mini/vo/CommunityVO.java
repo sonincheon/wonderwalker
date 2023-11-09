@@ -7,12 +7,13 @@ import java.util.Date;
 
 @Getter
 @Setter
-public class BoardVO {
-    private int boardNum;
+public class CommunityVO {
+    private int communityNum;
     private String uerId;
     private Date reportingDate;
     private int  views;
     private String title;
     private String Content;
+
 
 }

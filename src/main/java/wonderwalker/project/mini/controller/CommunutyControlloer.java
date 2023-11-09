@@ -3,9 +3,11 @@ package wonderwalker.project.mini.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import wonderwalker.project.mini.dao.CommunityDAO;
 import wonderwalker.project.mini.dao.UserInfoDAO;
-import wonderwalker.project.mini.vo.UserInfoVO;
+import wonderwalker.project.mini.vo.CommunityVO;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -13,19 +15,35 @@ import java.util.Map;
 // 3000번포트로 넘어갔다가 8011번포트로 넘어가면 에러인데 이걸 풀기위해 CrossOrigin으로 선언하여 풀어줌
 @RestController
 // restful-API ??? 컨트롤러
-@RequestMapping("/users")
+@RequestMapping("/community")
 // 그룹을 위한 Mapping
-public class UserControlloer {
+public class CommunutyControlloer {
+    //  모든 게시글 조회
+    @GetMapping("/SelectAllCommunity")
+    public ResponseEntity<List<CommunityVO>> CommunityAll() {
+        CommunityDAO dao = new CommunityDAO();
+        List<CommunityVO> list = dao.SelectAllCommunity();
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+    //  게시글  한개 조회
+    @GetMapping("/SelectAllCommunity")
+    public ResponseEntity<List<CommunityVO>> CommunityOne(@RequestParam int num) {
+        CommunityDAO dao = new CommunityDAO();
+        List<CommunityVO> list = dao.SelectOneCommunity(num);
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
 
-    @PostMapping("/login")
-    //I아이디,비밀번호를 받아와서 데이터베이스와
-    public ResponseEntity<Boolean> memberLogin(@RequestBody Map<String, String> loginData) {
-        String userid = loginData.get("id");
-        String userPwd = loginData.get("pwd");
-        System.out.println("ID : " + userid);
-        System.out.println("PWD : " + userPwd);
-        UserInfoDAO dao = new UserInfoDAO();
-        boolean result = dao.loginCheck(userid, userPwd);
+    //게시글 추가
+    @GetMapping("/InsertCommunity")
+    public ResponseEntity<Boolean> CommunityInsert(@RequestBody Map<String, String> content) {
+        String  ueryId=content.get("userid");
+       Date reportingDate= Date.valueOf(content.get("reportingDate"));
+       int views= Integer.parseInt(content.get("views"));
+       String title=content.get("Title");
+       String content1=content.get("constent1");
+        CommunityDAO dao = new CommunityDAO();
+
+        boolean result =dao.InsertCommunity(ueryId,reportingDate,views,title,content1);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
@@ -55,13 +73,5 @@ public class UserControlloer {
         return new ResponseEntity<>(isTrue, HttpStatus.OK);
     }
 
-    // Post : 회원 조회
-    @PostMapping("/userinfo")
-    public ResponseEntity<List<UserInfoVO>> Userinfo(@RequestParam String id) {
-        System.out.println("NAME : " + id);
-        UserInfoDAO dao = new UserInfoDAO();
-        List<UserInfoVO> list = dao.Userinfo(id);
-        return new ResponseEntity<>(list, HttpStatus.OK);
-    }
 
 }
