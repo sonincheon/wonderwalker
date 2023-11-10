@@ -8,7 +8,7 @@ import java.util.Date;
 @Setter
 
 public class TravelVO {
-    private Integer travel_num;
+    private String travel_num;
     private String travel_world;
     private String travel_theme;
     private String travel_area;

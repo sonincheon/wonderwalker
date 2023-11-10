@@ -14,7 +14,7 @@ public class TravelDAO {
     private PreparedStatement pStmt = null;
 
     //여행 공유 일정 출력 구문
-    public List<TravelVO> TravelInfo(String world) {
+    public List<TravelVO> TravelInfo(String world,String theme) {
         List<TravelVO> list = new ArrayList<>();
         String sql = null;
         System.out.println("world : " + world);
@@ -22,11 +22,11 @@ public class TravelDAO {
         try {
             conn = Common.getConnection();
             stmt = conn.createStatement();
-            if (world.equals("korea")) sql = "SELECT * FROM TRAVEL_INFO_TB WHERE TRAVEL_WORLD='국내'";
-            else sql = "SELECT * FROM TRAVEL_CONTENT_TB WHERE TRAVEL_WORLD='해외'";
+            if (world.equals("korea")) sql = "SELECT * FROM TRAVEL_INFO_TB WHERE TRAVEL_WORLD='국내' AND TRAVEL_THEME='"+theme+"'";
+            else sql = "SELECT * FROM TRAVEL_INFO_TB WHERE TRAVEL_WORLD='해외' AND TRAVEL_THEME='"+theme+"'";
             rs = stmt.executeQuery(sql);
             while (rs.next()) {
-                Integer travel_num =rs.getInt("TRAVEL_NUM");
+                String travel_num =rs.getString("TRAVEL_NUM");
                 String travel_world = rs.getString("TRAVEL_WORLD");
                 String travel_theme = rs.getString("TRAVEL_THEME");
                 String travel_area = rs.getString("TRAVEL_AREA");
@@ -62,18 +62,18 @@ public class TravelDAO {
     }
 
 
-    public List<TravelVO> TravelContent(String itemCode) {
+    public List<TravelVO> TravelContent(String travelNum) {
         List<TravelVO> list = new ArrayList<>();
         String sql = null;
-        System.out.println("itemcode: "+itemCode);
+        System.out.println("travelNum: "+travelNum);
 
         try {
             conn = Common.getConnection();
             stmt = conn.createStatement();
-            sql = "SELECT * FROM TRAVEL_CONTENT_TB WHERE TRAVEL_NUM = '"+itemCode+"'";
+            sql = "SELECT * FROM TRAVEL_CONTENT_TB WHERE TRAVEL_NUM = '"+travelNum+"'";
             rs = stmt.executeQuery(sql);
             while (rs.next()) {
-                Integer travel_num = rs.getInt("TRAVEL_NUM");
+                String travel_num = rs.getString("TRAVEL_NUM");
                 Date d_day = rs.getDate("D_DAY");
                 String travel_pic = rs.getString("TRAVEL_PIC");
                 String writing=rs.getString("TRAVEL_WRITING");
