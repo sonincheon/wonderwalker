@@ -13,7 +13,7 @@ public class CommunityVO {
     private Date reportingDate;
     private int  views;
     private String title;
-    private String Content;
+    private String content;
 
 
 }

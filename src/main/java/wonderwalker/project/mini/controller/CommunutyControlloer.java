@@ -26,8 +26,10 @@ public class CommunutyControlloer {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
     //  게시글  한개 조회
-    @GetMapping("/SelectAllCommunity")
+    @GetMapping("/SelectOneCommunity")
     public ResponseEntity<List<CommunityVO>> CommunityOne(@RequestParam int num) {
+        System.out.println("찾을 넘버"+num);
+        System.out.println("11asd5sa65dsa4ds65a54d");
         CommunityDAO dao = new CommunityDAO();
         List<CommunityVO> list = dao.SelectOneCommunity(num);
         return new ResponseEntity<>(list, HttpStatus.OK);
@@ -47,7 +49,7 @@ public class CommunutyControlloer {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping("/idcheck")
+    @GetMapping("/2")
     public ResponseEntity<Boolean> memberCheck(@RequestParam String id) {
         System.out.println("회원 가입 여부 확인 ID : " + id);
         UserInfoDAO dao = new UserInfoDAO();
@@ -56,7 +58,7 @@ public class CommunutyControlloer {
         return new ResponseEntity<>(isTrue, HttpStatus.OK);
     }
 
-    @PostMapping("/signup")
+    @PostMapping("/1")
     public ResponseEntity<Boolean> SignUp(@RequestBody Map<String, String>  userInfo) {
         System.out.println("olol22222xxxxx");
 
