@@ -12,6 +12,6 @@ public class UserInfoVO {
     private  String userName;
     private  String addr;
     private  String phoneNum;
-    private  String Email;
+    private  String email;
 
 }
