@@ -51,9 +51,8 @@ public class CommunutyControlloer {
 
 
     //게시글 수정
-    @PostMapping("/newPassword")
+    @PostMapping("/UpdateCommunity")
     public ResponseEntity<Boolean> updateCommunity(@RequestBody Map<String, String> content) {
-
         System.out.println("updateCommunityupdateCommunityupdateCommunity");
         int  communityNum= Integer.parseInt(content.get("num"));
         String  content1=content.get("content1");
