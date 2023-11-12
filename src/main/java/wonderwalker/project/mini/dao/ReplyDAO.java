@@ -76,6 +76,38 @@ public class ReplyDAO {
             if(result == 1) return true;
             else return false;
         }
+
+
+
+    //  리플 수정
+    public boolean  updateReply(String content1,int num){
+        int result = 0;
+        String sql = "UPDATE REPLY SET traverl_comment = ? WHERE replynum = ?";
+        try {
+            conn = Common.getConnection();
+            pStmt = conn.prepareStatement(sql);
+            pStmt.setString(1,content1);
+            pStmt.setInt(2, num);
+            result = pStmt.executeUpdate();
+            System.out.println("Yes?" + result);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Common.close(pStmt);
+        Common.close(conn);
+
+        if(result == 1) return true;
+        else return false;
+    }
+
+
+
+
+
+
+
+
     // 로그인창에 입력한 값과 DB에 있는 값을 확인하여 boolean으로 반환
     public boolean loginCheck(String id, String pwd) {
         try {
@@ -131,6 +163,28 @@ public boolean SingupIdCheck(String id) {
 }
 
 
+    public boolean  deleteReply(int num) {
+        //SQL 결과를 확인할 변수
+        boolean isNotReg = false;
+        try {
+            conn = Common.getConnection();
+            stmt = conn.createStatement();
+            String sql = "DELETE FROM SCOTT.REPLY WHERE REPLYNUM = "+num ;
+            rs = stmt.executeQuery(sql);
+            //SQL 결과 있으면 가입이 못하게 false ,없으면 가능하게 true로 if문 작성
+            if(rs.next()){
+                isNotReg = false;
+            }
+            else isNotReg = true;
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        Common.close(rs);
+        Common.close(stmt);
+        Common.close(conn);
+        System.out.println("cccc"+isNotReg);
+        return isNotReg;
+    }
 
 
 

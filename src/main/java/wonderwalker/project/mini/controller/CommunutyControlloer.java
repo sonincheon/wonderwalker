@@ -29,23 +29,37 @@ public class CommunutyControlloer {
     @GetMapping("/SelectOneCommunity")
     public ResponseEntity<List<CommunityVO>> CommunityOne(@RequestParam int num) {
         System.out.println("찾을 넘버"+num);
-        System.out.println("11asd5sa65dsa4ds65a54d");
+
         CommunityDAO dao = new CommunityDAO();
         List<CommunityVO> list = dao.SelectOneCommunity(num);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
     //게시글 추가
-    @GetMapping("/InsertCommunity")
-    public ResponseEntity<Boolean> CommunityInsert(@RequestBody Map<String, String> content) {
-        String  ueryId=content.get("userid");
-       Date reportingDate= Date.valueOf(content.get("reportingDate"));
-       int views= Integer.parseInt(content.get("views"));
-       String title=content.get("Title");
-       String content1=content.get("constent1");
-        CommunityDAO dao = new CommunityDAO();
+    @PostMapping("/insertCommunity")
+    public ResponseEntity<Boolean> insertCommunity(@RequestBody Map<String, String> content) {
 
-        boolean result =dao.InsertCommunity(ueryId,reportingDate,views,title,content1);
+        System.out.println("insertCommunityinsertCommunityinsertCommunity");
+        String userId=content.get("userId");
+        String  content1=content.get("content");
+        String  title=content.get("title");
+        String  url=content.get("url");
+        CommunityDAO dao = new CommunityDAO();
+        boolean result =dao.InsertCommunity(userId,content1,title,url);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+
+    //게시글 수정
+    @PostMapping("/newPassword")
+    public ResponseEntity<Boolean> updateCommunity(@RequestBody Map<String, String> content) {
+
+        System.out.println("updateCommunityupdateCommunityupdateCommunity");
+        int  communityNum= Integer.parseInt(content.get("num"));
+        String  content1=content.get("content1");
+        String  title=content.get("title");
+        CommunityDAO dao = new CommunityDAO();
+        boolean result =dao.updateCommunity(title,content1,communityNum);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 

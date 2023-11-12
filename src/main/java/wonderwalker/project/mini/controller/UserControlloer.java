@@ -40,9 +40,7 @@ public class UserControlloer {
 
     @PostMapping("/signup")
     public ResponseEntity<Boolean> SignUp(@RequestBody Map<String, String>  userInfo) {
-        System.out.println("olol22222xxxxx");
-
-        String userid=userInfo.get("id");
+         String userid=userInfo.get("id");
     String userPwd=userInfo.get("pwd");
     String nick=userInfo.get("nick");
     String userName=userInfo.get("name");
@@ -63,5 +61,35 @@ public class UserControlloer {
         List<UserInfoVO> list = dao.Userinfo(id);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
-
+    @PostMapping("/updateUserInfo")
+    public ResponseEntity<Boolean> updateUserInfo(@RequestBody Map<String, String>  userInfo) {
+        String kind=userInfo.get("kind");
+        String value=userInfo.get("value");
+        String id=userInfo.get("id");
+        UserInfoDAO dao = new UserInfoDAO();
+        boolean isTrue = dao.updateUserInfo(id,kind,value);
+        System.out.println(isTrue);
+        return new ResponseEntity<>(isTrue, HttpStatus.OK);
+    }
+    //비밀번호 변경
+    @PostMapping("/newPassword")
+    public ResponseEntity<Boolean> newPassword(@RequestBody Map<String, String>  newPw) {
+        String Pw=newPw.get("newPw");
+        String userid=newPw.get("userid");
+        System.out.println("newPasswordnewPasswordnewPasswordnewPasswordnewPasswordnewPasswordnewPassword");
+        UserInfoDAO dao = new UserInfoDAO();
+        boolean isTrue = dao.newPassword(userid,Pw);
+        System.out.println(isTrue);
+        return new ResponseEntity<>(isTrue, HttpStatus.OK);
+    }
+    //회원 삭제
+    @PostMapping("/deleteUser")
+    public ResponseEntity<Boolean> deleteUser(@RequestBody Map<String, String>  userInfo) {
+        String userid=userInfo.get("userid");
+        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+               UserInfoDAO dao = new UserInfoDAO();
+        boolean isTrue = dao.deleteUser(userid);
+        System.out.println(isTrue);
+        return new ResponseEntity<>(isTrue, HttpStatus.OK);
+    }
 }

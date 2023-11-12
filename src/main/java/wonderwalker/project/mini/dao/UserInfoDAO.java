@@ -66,8 +66,48 @@ public boolean SingupIdCheck(String id) {
     Common.close(conn);
     return isNotReg;
 }
+    //비밀번호 변경
+    public boolean newPassword(String userid,String value){
+        int result = 0;
+        String sql = "UPDATE USERINFO SET  USERPW = ? WHERE USERID= ? ";
+        try {
+            conn = Common.getConnection();
+            pStmt = conn.prepareStatement(sql);
+            pStmt.setString(1, value);
+            pStmt.setString(2, userid);
+            result = pStmt.executeUpdate();
+            System.out.println("Yes?" + result);
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Common.close(pStmt);
+        Common.close(conn);
 
+        if(result == 1) return true;
+        else return false;
+    }
+    //개인정보 변경
+    public boolean updateUserInfo(String id,String kind, String value){
+        int result = 0;
+        String sql = "UPDATE USERINFO SET  "+ kind +" = ? WHERE USERID= ? ";
+        try {
+            conn = Common.getConnection();
+            pStmt = conn.prepareStatement(sql);
+            pStmt.setString(1, value);
+            pStmt.setString(2, id);
+            result = pStmt.executeUpdate();
+            System.out.println("Yes?" + result);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Common.close(pStmt);
+        Common.close(conn);
+
+        if(result == 1) return true;
+        else return false;
+    }
     // 회원 가입
     public boolean SignUp(String userid, String userPwd, String nick, String userName, String addr, String phone, String email){
         int result = 0;
@@ -95,6 +135,26 @@ public boolean SingupIdCheck(String id) {
         else return false;
     }
 
+    // 회원 삭제
+    public boolean deleteUser(String userid){
+        int result = 0;
+        String sql = "DELETE FROM USERINFO WHERE USERID = ?";
+        try {
+            conn = Common.getConnection();
+            pStmt = conn.prepareStatement(sql);
+            pStmt.setString(1, userid);
+            result = pStmt.executeUpdate();
+            System.out.println("Yes?" + result);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Common.close(pStmt);
+        Common.close(conn);
+
+        if(result == 1) return true;
+        else return false;
+    }
 
     // 회원정보 조회
     public List<UserInfoVO> Userinfo(String id) {
@@ -113,7 +173,7 @@ public boolean SingupIdCheck(String id) {
                 String addr = rs.getString("ADDR");
                 String phonel = rs.getString("PHONENUM");
                 String email = rs.getString("EMAIL");
-
+                String pw = rs.getString("USERPW");
 
                 UserInfoVO vo = new UserInfoVO();
                 vo.setUserId(userid);
@@ -122,6 +182,7 @@ public boolean SingupIdCheck(String id) {
                 vo.setAddr(addr);
                 vo.setPhoneNum(phonel);
                 vo.setEmail(email);
+                vo.setUserPw(pw);
                 list.add(vo);
 
 

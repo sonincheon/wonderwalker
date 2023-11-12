@@ -31,7 +31,7 @@ public class ReplyControlloer {
 //    리플 등록
 @PostMapping("/insertReply")
 public ResponseEntity<Boolean> InsertReply(@RequestBody Map<String, String> replyData) {
-    System.out.println("나오니?");
+    System.out.println("AAAA");
     String userId = replyData.get("userid");
     String replyInsert = replyData.get("replyInsert");
     int num = Integer.parseInt(replyData.get("num"));
@@ -41,5 +41,22 @@ public ResponseEntity<Boolean> InsertReply(@RequestBody Map<String, String> repl
     boolean isTrue = dao.InsertReply(replyInsert ,userId, num);
     return new ResponseEntity<>(isTrue, HttpStatus.OK);
 }
-
+//리플 삭제
+    @GetMapping("/deleteReply")
+    public ResponseEntity<Boolean> deleteReply(@RequestParam int num) {
+        System.out.println("bbbbbb");
+        ReplyDAO dao = new ReplyDAO();
+        boolean isTrue = dao.deleteReply(num);
+        return new ResponseEntity<>(isTrue, HttpStatus.OK);
+    }
+    //리플 수정
+    @PostMapping("/updateReply")
+    public ResponseEntity<Boolean> updateReply(@RequestBody Map<String, String> replyData) {
+        System.out.println("update+update+update+update");
+        int num = Integer.parseInt(replyData.get("replyNum"));
+        String coment = replyData.get("coment");
+        ReplyDAO dao = new ReplyDAO();
+        boolean isTrue = dao.updateReply(coment , num );
+        return new ResponseEntity<>(isTrue, HttpStatus.OK);
+    }
 }

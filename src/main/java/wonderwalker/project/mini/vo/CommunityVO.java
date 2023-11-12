@@ -14,6 +14,7 @@ public class CommunityVO {
     private int  views;
     private String title;
     private String content;
+    private String imgurl;
 
 
 }
