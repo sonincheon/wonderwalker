@@ -2,6 +2,7 @@ package wonderwalker.project.mini.dao;
 
 import wonderwalker.project.mini.comon.Common;
 import wonderwalker.project.mini.vo.GoodsVO;
+import wonderwalker.project.mini.vo.SellVO;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -55,7 +56,7 @@ public class GoodsDAO {
         return list;
     }
 
-
+    // 상품 상세페이지
     public List<GoodsVO> GoodsInfo(String itemCode) {
         List<GoodsVO> list = new ArrayList<>();
         String sql = null;
@@ -118,4 +119,91 @@ public class GoodsDAO {
         }
         return list;
     }
+
+    //상품 판매 완료
+    public boolean Itemsales(String userId,String itemNum,String i_Date,String date_num,String person,String price){
+        int result = 0;
+        String sql = "INSERT INTO SALES_TABLE (SALE_NUM,USERID,ITEM_NUM,I_DATE,DATE_NUM,PERSON,PRICE) VALUES ('S' || SIRIAL_NUM.NEXTVAL,?,?,TO_DATE(?,'YYYY-MM-DD'),?,?,?)";
+        try {
+            conn = Common.getConnection();
+            pStmt = conn.prepareStatement(sql);
+            pStmt.setString(1, userId);
+            pStmt.setString(2, itemNum);
+            pStmt.setString(3, i_Date);
+            pStmt.setString(4, date_num);
+            pStmt.setString(5, person);
+            pStmt.setString(6, price);
+            result = pStmt.executeUpdate();
+            System.out.println("Yes?" + result);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Common.close(pStmt);
+        Common.close(conn);
+
+        if(result == 1) return true;
+        else return false;
+    }
+
+    //판매완료 리스트 출력
+    public List<SellVO> SellView(String userId) {
+        List<SellVO> list = new ArrayList<>();
+        String sql = null;
+        System.out.println("userid: "+userId);
+        try {
+            conn = Common.getConnection();
+            stmt = conn.createStatement();
+            sql = "SELECT SALES_TABLE.SALE_NUM,SALES_TABLE.PRICE ,SALES_TABLE.USERID ,SALES_TABLE.ITEM_NUM ,SALES_TABLE.I_DATE ,SALES_TABLE.DATE_NUM,SALES_TABLE.PERSON,GOODS_TABLE.TITLE FROM SALES_TABLE LEFT JOIN GOODS_TABLE ON SALES_TABLE.ITEM_NUM = GOODS_TABLE.ITEM_NUM WHERE SALES_TABLE.USERID ='"+userId+"'";
+            rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                String sale_num =rs.getString("SALE_NUM");
+                String userid =rs.getString("USERID");
+                String item_num=rs.getString("ITEM_NUM");
+                String i_date=rs.getString("I_DATE");
+                Integer date_num=rs.getInt("DATE_NUM");
+                Integer person=rs.getInt("PERSON");
+                Integer price=rs.getInt("PRICE");
+                String title=rs.getString("TITLE");
+
+                SellVO vo = new SellVO();
+                vo.setUserid(userid);
+                vo.setSale_num(sale_num);
+                vo.setItem_num(item_num);
+                vo.setI_date(i_date);
+                vo.setDate_num(date_num);
+                vo.setPerson(person);
+                vo.setPrice(price);
+                vo.setTitle(title);
+
+                list.add(vo);
+            }
+            Common.close(rs);
+            Common.close(stmt);
+            Common.close(conn);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    //구매 취소
+    public boolean SaleCancle(String sale_num){
+        int result = 0;
+        String sql = "DELETE FROM SALES_TABLE WHERE SALE_NUM = ?";
+        try {
+            conn = Common.getConnection();
+            pStmt = conn.prepareStatement(sql);
+            pStmt.setString(1, sale_num);
+            result = pStmt.executeUpdate();
+            System.out.println("Yes?" + result);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Common.close(pStmt);
+        Common.close(conn);
+
+        if(result == 1) return true;
+        else return false;
+    }
+
 }

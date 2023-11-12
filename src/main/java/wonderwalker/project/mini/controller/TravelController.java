@@ -30,7 +30,7 @@ public class TravelController {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
-    @GetMapping("/Diyview")
+    @GetMapping("")
     //조회정보 가져올떈 리퀘어파람으로 id값 뺴오기
     public ResponseEntity<List<TravelVO>> TravelInfo2(@RequestParam String travelNum){
 
