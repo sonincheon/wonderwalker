@@ -76,9 +76,6 @@ public class ReplyDAO {
             if(result == 1) return true;
             else return false;
         }
-
-
-
     //  리플 수정
     public boolean  updateReply(String content1,int num){
         int result = 0;

@@ -10,6 +10,7 @@ import java.util.Date;
 public class CommunityVO {
     private int communityNum;
     private String uerId;
+
     private Date reportingDate;
     private int  views;
     private String title;

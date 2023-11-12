@@ -76,7 +76,6 @@ public class UserControlloer {
     public ResponseEntity<Boolean> newPassword(@RequestBody Map<String, String>  newPw) {
         String Pw=newPw.get("newPw");
         String userid=newPw.get("userid");
-        System.out.println("newPasswordnewPasswordnewPasswordnewPasswordnewPasswordnewPasswordnewPassword");
         UserInfoDAO dao = new UserInfoDAO();
         boolean isTrue = dao.newPassword(userid,Pw);
         System.out.println(isTrue);
@@ -86,7 +85,6 @@ public class UserControlloer {
     @PostMapping("/deleteUser")
     public ResponseEntity<Boolean> deleteUser(@RequestBody Map<String, String>  userInfo) {
         String userid=userInfo.get("userid");
-        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
                UserInfoDAO dao = new UserInfoDAO();
         boolean isTrue = dao.deleteUser(userid);
         System.out.println(isTrue);

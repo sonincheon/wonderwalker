@@ -63,31 +63,8 @@ public class CommunutyControlloer {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping("/2")
-    public ResponseEntity<Boolean> memberCheck(@RequestParam String id) {
-        System.out.println("회원 가입 여부 확인 ID : " + id);
-        UserInfoDAO dao = new UserInfoDAO();
-        boolean isTrue = dao.SingupIdCheck(id);
-        System.out.println(isTrue);
-        return new ResponseEntity<>(isTrue, HttpStatus.OK);
-    }
 
-    @PostMapping("/1")
-    public ResponseEntity<Boolean> SignUp(@RequestBody Map<String, String>  userInfo) {
-        System.out.println("olol22222xxxxx");
 
-        String userid=userInfo.get("id");
-    String userPwd=userInfo.get("pwd");
-    String nick=userInfo.get("nick");
-    String userName=userInfo.get("name");
-    String addr=userInfo.get("addr");
-    String phone=userInfo.get("phone");
-    String email=userInfo.get("email");
-        UserInfoDAO dao = new UserInfoDAO();
-        boolean isTrue = dao.SignUp(userid,userPwd,nick,userName,addr,phone,email);
-        System.out.println(isTrue);
-        return new ResponseEntity<>(isTrue, HttpStatus.OK);
-    }
 
 
 }

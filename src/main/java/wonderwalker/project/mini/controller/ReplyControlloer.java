@@ -44,7 +44,6 @@ public ResponseEntity<Boolean> InsertReply(@RequestBody Map<String, String> repl
 //리플 삭제
     @GetMapping("/deleteReply")
     public ResponseEntity<Boolean> deleteReply(@RequestParam int num) {
-        System.out.println("bbbbbb");
         ReplyDAO dao = new ReplyDAO();
         boolean isTrue = dao.deleteReply(num);
         return new ResponseEntity<>(isTrue, HttpStatus.OK);

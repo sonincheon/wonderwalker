@@ -9,8 +9,7 @@ import java.util.Date;
 @Setter
 public class ReplyVO {
     private int commentNum;
-    private String travelComment;
-    private String userId;
+    private String travelComment;    private String userId;
     private int travelScope;
     private Date travelWriteDate;
     private String travelValue;

@@ -134,7 +134,6 @@ public boolean SingupIdCheck(String id) {
         if(result == 1) return true;
         else return false;
     }
-
     // 회원 삭제
     public boolean deleteUser(String userid){
         int result = 0;

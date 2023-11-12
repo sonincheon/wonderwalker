@@ -30,7 +30,6 @@ public class CommunityDAO {
             pStmt.setInt(1, num);
             pStmt.executeUpdate();
             pStmt.close(); // 쿼리 실행 후에는 즉시 닫아줍니다.
-
             // 2. 커뮤니티 정보 조회
             sql = "SELECT * FROM COMMUNITY WHERE COMMUNITYNUM = ?";
             pStmt = conn.prepareStatement(sql);
