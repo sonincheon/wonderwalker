@@ -15,7 +15,7 @@ public class GoodsDAO {
     private PreparedStatement pStmt = null;
 
     //상품 리스트 출력 구문
-    public List<GoodsVO> GoodsSelect(String world) {
+    public List<GoodsVO> GoodsSelect(String world,String area) {
         List<GoodsVO> list = new ArrayList<>();
         String sql = null;
         System.out.println("world : " + world);
@@ -23,8 +23,15 @@ public class GoodsDAO {
         try {
             conn = Common.getConnection();
             stmt = conn.createStatement();
-            if (world.equals("korea")) sql = "SELECT * FROM GOODS_TABLE WHERE I_WORLD='국내'";
-            else sql = "SELECT * FROM GOODS_TABLE WHERE I_WORLD='해외 '";
+            if(area.equals("ALL")){
+                if (world.equals("korea"))
+                    sql = "SELECT * FROM GOODS_TABLE WHERE I_WORLD='국내'";
+                else sql = "SELECT * FROM GOODS_TABLE WHERE I_WORLD='해외 '";
+            }else{
+                if (world.equals("korea"))
+                    sql = "SELECT * FROM GOODS_TABLE WHERE I_WORLD='국내' AND I_AREA ='"+area+"'";
+                else sql = "SELECT * FROM GOODS_TABLE WHERE I_WORLD='해외 ' AND I_AREA ='"+area+"'";
+            }
             rs = stmt.executeQuery(sql);
             while (rs.next()) {
                 String main_img =rs.getString("I_MAIN_IMG");
@@ -205,5 +212,27 @@ public class GoodsDAO {
         if(result == 1) return true;
         else return false;
     }
+
+    // 조회수 증가
+    public boolean GoodsHitup(String item_num){
+        int result = 0;
+        String sql =  "UPDATE GOODS_TABLE SET I_HIT = I_HIT + 1 WHERE ITEM_NUM = ? ";
+        System.out.println(item_num);
+        try {
+            conn = Common.getConnection();
+            pStmt = conn.prepareStatement(sql);
+            pStmt.setString(1, item_num);
+            result = pStmt.executeUpdate();
+            System.out.println("Yes?" + result);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Common.close(pStmt);
+        Common.close(conn);
+
+        if(result == 1) return true;
+        else return false;
+    }
+
 
 }
