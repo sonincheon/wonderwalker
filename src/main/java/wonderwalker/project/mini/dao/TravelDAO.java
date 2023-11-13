@@ -16,6 +16,7 @@ public class TravelDAO {
 
     //여행 공유 일정 출력 구문(메인)
     public List<TravelVO> TravelInfo(String world, String theme) {
+        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
         List<TravelVO> list = new ArrayList<>();
         String sql = null;
         System.out.println("world : " + world);
@@ -65,6 +66,7 @@ public class TravelDAO {
 
     // 여행 정보 리스트 보기
     public List<Travel2VO> TravelContent(String travelNum) {
+        System.out.println("vbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
         List<Travel2VO> list = new ArrayList<>();
         String sql = null;
         System.out.println("travelNum: " + travelNum);
