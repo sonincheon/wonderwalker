@@ -3,10 +3,9 @@ package wonderwalker.project.mini.vo;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
+import java.sql.Date;
 @Getter
 @Setter
-
 public class TravelVO {
     private String travel_num;
     private String travel_world;
@@ -19,8 +18,5 @@ public class TravelVO {
     private Date travel_writedate;
     private Integer travel_view;
     private Integer travel_good;
-    private Date d_day;
-    private String travel_pic;
-    private String travel_writing;
-    private String travel_map;
+
 }

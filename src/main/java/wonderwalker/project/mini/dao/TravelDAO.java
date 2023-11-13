@@ -1,6 +1,7 @@
 package wonderwalker.project.mini.dao;
 
 import wonderwalker.project.mini.comon.Common;
+import wonderwalker.project.mini.vo.Travel2VO;
 import wonderwalker.project.mini.vo.TravelVO;
 
 import java.sql.*;
@@ -13,8 +14,8 @@ public class TravelDAO {
     private ResultSet rs = null;
     private PreparedStatement pStmt = null;
 
-    //여행 공유 일정 출력 구문
-    public List<TravelVO> TravelInfo(String world,String theme) {
+    //여행 공유 일정 출력 구문(메인)
+    public List<TravelVO> TravelInfo(String world, String theme) {
         List<TravelVO> list = new ArrayList<>();
         String sql = null;
         System.out.println("world : " + world);
@@ -22,18 +23,19 @@ public class TravelDAO {
         try {
             conn = Common.getConnection();
             stmt = conn.createStatement();
-            if (world.equals("korea")) sql = "SELECT * FROM TRAVEL_INFO_TB WHERE TRAVEL_WORLD='국내' AND TRAVEL_THEME='"+theme+"'";
-            else sql = "SELECT * FROM TRAVEL_INFO_TB WHERE TRAVEL_WORLD='해외' AND TRAVEL_THEME='"+theme+"'";
+            if (world.equals("korea"))
+                sql = "SELECT * FROM TRAVEL_INFO_TB WHERE TRAVEL_WORLD='국내' AND TRAVEL_THEME='" + theme + "'";
+            else sql = "SELECT * FROM TRAVEL_INFO_TB WHERE TRAVEL_WORLD='해외' AND TRAVEL_THEME='" + theme + "'";
             rs = stmt.executeQuery(sql);
             while (rs.next()) {
-                String travel_num =rs.getString("TRAVEL_NUM");
+                String travel_num = rs.getString("TRAVEL_NUM");
                 String travel_world = rs.getString("TRAVEL_WORLD");
                 String travel_theme = rs.getString("TRAVEL_THEME");
                 String travel_area = rs.getString("TRAVEL_AREA");
                 String travel_title = rs.getString("TRAVEL_TITLE");
                 Date travel_startdate = rs.getDate("TRAVEL_STARTDATE");
-                Date travel_enddate =rs.getDate("TRAVEL_ENDDATE");
-                String travel_userid =rs.getString("TRAVEL_USERID");
+                Date travel_enddate = rs.getDate("TRAVEL_ENDDATE");
+                String travel_userid = rs.getString("TRAVEL_USERID");
                 Date travel_writedate = rs.getDate("TRAVEL_WRITEDATE");
                 Integer travel_view = rs.getInt("TRAVEL_VIEW");
                 Integer travel_good = rs.getInt("TRAVEL_GOOD");
@@ -61,31 +63,31 @@ public class TravelDAO {
         return list;
     }
 
-
-    public List<TravelVO> TravelContent(String travelNum) {
-        List<TravelVO> list = new ArrayList<>();
+    // 여행 정보 리스트 보기
+    public List<Travel2VO> TravelContent(String travelNum) {
+        List<Travel2VO> list = new ArrayList<>();
         String sql = null;
-        System.out.println("travelNum: "+travelNum);
+        System.out.println("travelNum: " + travelNum);
 
         try {
             conn = Common.getConnection();
             stmt = conn.createStatement();
-            sql = "SELECT * FROM TRAVEL_CONTENT_TB WHERE TRAVEL_NUM = '"+travelNum+"'";
+            sql = "SELECT * FROM TRAVEL_CONTENT_TB WHERE TRAVEL_NUM = '" + travelNum + "'";
             rs = stmt.executeQuery(sql);
             while (rs.next()) {
                 String travel_num = rs.getString("TRAVEL_NUM");
-                Date d_day = rs.getDate("D_DAY");
+                Integer d_day = rs.getInt("D_DAY");
                 String travel_pic = rs.getString("TRAVEL_PIC");
-                String writing=rs.getString("TRAVEL_WRITING");
+                String travel_writing = rs.getString("TRAVEL_WRITING");
                 String travel_map = rs.getString("TRAVEL_MAP");
 
-                TravelVO vo = new TravelVO();
+
+                Travel2VO vo = new Travel2VO();
                 vo.setTravel_num(travel_num);
                 vo.setD_day(d_day);
                 vo.setTravel_pic(travel_pic);
-                vo.setTravel_writing(writing);
+                vo.setTravel_writing(travel_writing);
                 vo.setTravel_map(travel_map);
-
                 list.add(vo);
             }
             Common.close(rs);
@@ -95,5 +97,51 @@ public class TravelDAO {
             e.printStackTrace();
         }
         return list;
+    }
+
+    // 게시글 등록하기
+    public boolean travelInsert(TravelVO travelVO) {
+        boolean isInsert = false;
+        try {
+            conn = Common.getConnection();
+            stmt = conn.createStatement();
+            String sql = "INSERT INTO TRAVEL_INFO_TB(TRAVEL_NUM,TRAVEL_USERID,TRAVEL_WORLD,TRAVEL_AREA,TRAVEL_STARTDATE,TRAVEL_ENDDATE,TRAVEL_THEME,TRAVEL_TITLE,TRAVEL_WRITEDATE) VALUES('T' || SIRIAL_NUM.nextval,?,?,?,?,?,?,?,SYSDATE)";
+            pStmt = conn.prepareStatement(sql);
+            pStmt.setString(1, travelVO.getTravel_userid());
+            pStmt.setString(2, travelVO.getTravel_world());
+            pStmt.setString(3, travelVO.getTravel_area());
+            pStmt.setDate(4, travelVO.getTravel_startdate());
+            pStmt.setDate(5, travelVO.getTravel_enddate());
+            pStmt.setString(6, travelVO.getTravel_theme());
+            pStmt.setString(7, travelVO.getTravel_title());
+
+            int result = pStmt.executeUpdate();
+            if (result == 1) isInsert = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Common.close(pStmt);
+        Common.close(conn);
+        return isInsert;
+    }
+
+    public boolean travelInsert2(Travel2VO travel2VO) {
+        boolean isInsert = false;
+        try {
+            conn = Common.getConnection();
+            stmt = conn.createStatement();
+            String sql = "INSERT INTO TRAVEL_CONTENT_TB(TRAVEL_MAP,TRAVEL_PIC,TRAVEL_WRITING) VALUES (?,?,?)";
+            pStmt = conn.prepareStatement(sql);
+            pStmt.setString(1, travel2VO.getTravel_map());
+            pStmt.setString(2, travel2VO.getTravel_pic());
+            pStmt.setString(3, travel2VO.getTravel_writing());
+            int result = pStmt.executeUpdate();
+            if (result == 1) isInsert = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Common.close(pStmt);
+        Common.close(conn);
+        return isInsert;
     }
 }
