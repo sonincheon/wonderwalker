@@ -62,7 +62,14 @@ public class CommunutyControlloer {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-
+    //  게시글 삭제
+    @GetMapping("/DeleteCommunity")
+    public ResponseEntity<Boolean> DeleteCommunity(@RequestParam int num) {
+        System.out.println("삭제 넘버"+num);
+        CommunityDAO dao = new CommunityDAO();
+        boolean result = dao.DeleteCommunity(num);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 
 
 

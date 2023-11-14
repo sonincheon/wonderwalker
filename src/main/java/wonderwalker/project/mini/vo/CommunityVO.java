@@ -9,8 +9,7 @@ import java.util.Date;
 @Setter
 public class CommunityVO {
     private int communityNum;
-    private String uerId;
-
+    private String userId;
     private Date reportingDate;
     private int  views;
     private String title;

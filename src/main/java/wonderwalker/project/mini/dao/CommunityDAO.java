@@ -48,7 +48,7 @@ public class CommunityDAO {
 
                 CommunityVO vo = new CommunityVO();
                 vo.setCommunityNum(conmmunityNum);
-                vo.setUerId(userId);
+                vo.setUserId(userId);
                 vo.setReportingDate(reportingdate);
                 vo.setViews(views);
                 vo.setTitle(title);
@@ -84,7 +84,7 @@ public class CommunityDAO {
         try {
             conn = Common.getConnection();
             stmt = conn.createStatement();
-            sql = "SELECT * FROM COMMUNITY";
+            sql = "SELECT * FROM COMMUNITY ORDER BY COMMUNITYNUM DESC";
             rs = stmt.executeQuery(sql);
             while(rs.next()) {
                 int conmmunityNum = Integer.parseInt(rs.getString("COMMUNITYNUM"));
@@ -93,9 +93,10 @@ public class CommunityDAO {
                 int views = Integer.parseInt(rs.getString("VIEWS"));
                 String title = rs.getString("TITLE");
                 String content1 = rs.getString("CONTENT1");
+
                 CommunityVO vo = new CommunityVO();
                 vo.setCommunityNum(conmmunityNum);
-                vo.setUerId(userId);
+                vo.setUserId(userId);
                 vo.setReportingDate(reportingdate);
                 vo.setViews(views);
                 vo.setTitle(title);
@@ -105,7 +106,7 @@ public class CommunityDAO {
                 System.out.println("리스트 출력 테스트");
                 for (CommunityVO community : list) {
                     System.out.println(community.getCommunityNum());
-                    System.out.println(community.getUerId());
+                    System.out.println(community.getUserId());
                     System.out.println(community.getReportingDate());
                     System.out.println(community.getViews());
                     System.out.println(community.getTitle());
@@ -150,11 +151,7 @@ public class CommunityDAO {
     // 글 수정
     public boolean updateCommunity (String title,String content,int communityNum){
         int result = 0;
-
         String sql = "UPDATE COMMUNITY SET title = ?, CONTENT1 = ? WHERE COMMUNITYNUM = ?";
-
-
-
         try {
             conn = Common.getConnection();
             pStmt = conn.prepareStatement(sql);
@@ -163,10 +160,8 @@ public class CommunityDAO {
             pStmt.setInt(3, communityNum);
             result = pStmt.executeUpdate();
             System.out.println("Yes?" + result);
-
         } catch (Exception e) {
             e.printStackTrace();
-
         }
         Common.close(pStmt);
         Common.close(conn);
@@ -175,37 +170,24 @@ public class CommunityDAO {
         else   return false;
     }
 
-    // 로그인창에 입력한 값과 DB에 있는 값을 확인하여 boolean으로 반환
-
-
-
-
-//회원가입시 아이디가 DB에 있는지 확인하여 boolean으로 반환
-public boolean SingupIdCheck(String id) {
-        //SQL 결과를 확인할 변수
-    boolean isNotReg = false;
-    try {
-        conn = Common.getConnection();
-        stmt = conn.createStatement();
-        String sql = "SELECT * FROM USERINFO WHERE USERID = " + "'" + id +"'";
-        rs = stmt.executeQuery(sql);
-       //SQL 결과 있으면 가입이 못하게 false ,없으면 가능하게 true로 if문 작성
-        if(rs.next()){
-            isNotReg = false;
+    public boolean DeleteCommunity (int communityNum){
+        int result = 0;
+        String sql = "DELETE FROM COMMUNITY  WHERE COMMUNITYNUM = ? ";
+        try {
+            conn = Common.getConnection();
+            pStmt = conn.prepareStatement(sql);
+            pStmt.setInt(1, communityNum);
+            result = pStmt.executeUpdate();
+            System.out.println("Yes?" + result);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        else isNotReg = true;
-    } catch(Exception e) {
-        e.printStackTrace();
+        Common.close(pStmt);
+        Common.close(conn);
+
+        if(result == 1) return true;
+        else   return false;
     }
-    Common.close(rs);
-    Common.close(stmt);
-    Common.close(conn);
-    return isNotReg;
-}
-
-
-
-
 
 
 
