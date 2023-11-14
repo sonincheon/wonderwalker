@@ -14,23 +14,26 @@ public class GoodsDAO {
     private ResultSet rs = null;
     private PreparedStatement pStmt = null;
 
+
     //상품 리스트 출력 구문
-    public List<GoodsVO> GoodsSelect(String world,String area) {
+    public List<GoodsVO> GoodsList(String world,String area,Integer count) {
         List<GoodsVO> list = new ArrayList<>();
         String sql = null;
         System.out.println("world : " + world);
 
+        int count1 =(count*5)+1;
+        int count2 =(count*5)+5;
         try {
             conn = Common.getConnection();
             stmt = conn.createStatement();
             if(area.equals("ALL")){
                 if (world.equals("korea"))
-                    sql = "SELECT * FROM GOODS_TABLE WHERE I_WORLD='국내'";
-                else sql = "SELECT * FROM GOODS_TABLE WHERE I_WORLD='해외 '";
+                    sql = "SELECT * FROM (SELECT ROWNUM AS NUM, GOODS_TABLE.* FROM GOODS_TABLE WHERE  I_WORLD='국내')WHERE NUM BETWEEN "+count1+" AND "+count2;
+                else sql = "SELECT * FROM (SELECT ROWNUM AS NUM, GOODS_TABLE.* FROM GOODS_TABLE WHERE  I_WORLD='해외 ')WHERE NUM BETWEEN "+count1+" AND "+count2;
             }else{
                 if (world.equals("korea"))
-                    sql = "SELECT * FROM GOODS_TABLE WHERE I_WORLD='국내' AND I_AREA ='"+area+"'";
-                else sql = "SELECT * FROM GOODS_TABLE WHERE I_WORLD='해외 ' AND I_AREA ='"+area+"'";
+                    sql = "SELECT * FROM (SELECT ROWNUM AS NUM, GOODS_TABLE.* FROM GOODS_TABLE WHERE  I_WORLD='국내' AND I_AREA = '"+area+"')WHERE NUM BETWEEN "+count1+" AND "+count2;
+                else sql = "SELECT * FROM (SELECT ROWNUM AS NUM, GOODS_TABLE.* FROM GOODS_TABLE WHERE  I_WORLD='해외 ' AND I_AREA = '"+area+"')WHERE NUM BETWEEN "+count1+" AND "+count2;
             }
             rs = stmt.executeQuery(sql);
             while (rs.next()) {
@@ -62,6 +65,8 @@ public class GoodsDAO {
         }
         return list;
     }
+
+
 
     // 상품 상세페이지
     public List<GoodsVO> GoodsInfo(String itemCode) {
@@ -233,6 +238,4 @@ public class GoodsDAO {
         if(result == 1) return true;
         else return false;
     }
-
-
 }

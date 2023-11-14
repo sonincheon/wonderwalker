@@ -20,11 +20,11 @@ public class GoodsController {
     //상품리스트
     @GetMapping("")
     //조회정보 가져올떈 리퀘어파람으로 id값 뺴오기
-    public ResponseEntity<List<GoodsVO>> GoodsList(@RequestParam String world,String area){
+    public ResponseEntity<List<GoodsVO>> GoodsList(@RequestParam String world,String area,Integer count){
 
         System.out.println(" world :  " + world);
         GoodsDAO dao =new GoodsDAO(); //로그인
-        List<GoodsVO> list = dao.GoodsSelect(world,area);
+        List<GoodsVO> list = dao.GoodsList(world,area,count);
         //맴버 리스트 리턴해줌
         return new ResponseEntity<>(list,HttpStatus.OK);
     }
