@@ -48,7 +48,7 @@ public class CommunityDAO {
 
                 CommunityVO vo = new CommunityVO();
                 vo.setCommunityNum(conmmunityNum);
-                vo.setUserId(userId);
+                vo.setUerId(userId);
                 vo.setReportingDate(reportingdate);
                 vo.setViews(views);
                 vo.setTitle(title);
@@ -93,10 +93,9 @@ public class CommunityDAO {
                 int views = Integer.parseInt(rs.getString("VIEWS"));
                 String title = rs.getString("TITLE");
                 String content1 = rs.getString("CONTENT1");
-
                 CommunityVO vo = new CommunityVO();
                 vo.setCommunityNum(conmmunityNum);
-                vo.setUserId(userId);
+                vo.setUerId(userId);
                 vo.setReportingDate(reportingdate);
                 vo.setViews(views);
                 vo.setTitle(title);
@@ -106,7 +105,7 @@ public class CommunityDAO {
                 System.out.println("리스트 출력 테스트");
                 for (CommunityVO community : list) {
                     System.out.println(community.getCommunityNum());
-                    System.out.println(community.getUserId());
+                    System.out.println(community.getUerId());
                     System.out.println(community.getReportingDate());
                     System.out.println(community.getViews());
                     System.out.println(community.getTitle());

@@ -10,6 +10,8 @@ import wonderwalker.project.mini.vo.TravelVO;
 import java.util.List;
 import java.util.Map;
 
+import static java.lang.Integer.parseInt;
+
 
 @CrossOrigin(origins = "http://localhost:3000")
 // 3000번포트로 넘어갔다가 8111번포트로 넘어가면 에러인데 이걸 풀기위해 CrossOrigin으로 선언하여 풀어줌
@@ -41,9 +43,10 @@ public class TravelController {
 
         return new ResponseEntity<>(list,HttpStatus.OK);
     }
-
+    //완료
     @PostMapping("DiyWrite")
-        public ResponseEntity<Boolean> travelinsert(@RequestBody Map<String, String> insert) {
+        public ResponseEntity<String> travelinsert(@RequestBody Map<String, String> insert) {
+
         String travel_userid=insert.get("userId");
         String travel_world =insert.get("world");
         String travel_area=insert.get("area");
@@ -53,19 +56,31 @@ public class TravelController {
         String travel_title=insert.get("title");
 
         TravelDAO dao = new TravelDAO();
-        boolean result = dao.travelInsert(travel_world, travel_area, travel_theme, travel_title, travel_startdate,travel_enddate, travel_userid);
+        String result = dao.travelInsert(travel_world, travel_area, travel_theme, travel_title, travel_startdate,travel_enddate, travel_userid);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PostMapping("DiyWrite/days")
     public ResponseEntity<Boolean> travelinsert2(@RequestBody Map<String, String> insert2) {
         System.out.println("inserttravel");
+        String travel_num=insert2.get("tvNum");
+        String d_day=insert2.get("day");
         String travel_map=insert2.get("url");
         String travel_pic =insert2.get("file");
         String travel_writing=insert2.get("content");
+        System.out.println("왜안돼는대대대대");
         TravelDAO dao = new TravelDAO();
-        boolean result =dao.travelInsert2(travel_map,travel_pic,travel_writing);
+        boolean result =dao.travelInsert2(travel_num,d_day,travel_map,travel_pic,travel_writing);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+
+
+
+
+
+
+
+
 
 }

@@ -86,7 +86,7 @@ public class TravelDAO {
             rs = stmt.executeQuery(sql);
             while (rs.next()) {
                 String travel_num = rs.getString("TRAVEL_NUM");
-                Integer d_day = rs.getInt("D_DAY");
+                String d_day = rs.getString("D_DAY");
                 String travel_pic = rs.getString("TRAVEL_PIC");
                 String travel_writing = rs.getString("TRAVEL_WRITING");
                 String travel_map = rs.getString("TRAVEL_MAP");
@@ -111,14 +111,14 @@ public class TravelDAO {
 
 
     // 게시글 등록하기
-    public boolean travelInsert(String travelWorld, String travelArea, String travel_theme, String travel_title, String travel_startdate,String travel_enddate, String travel_userid) {
+    public String travelInsert(String travelWorld, String travelArea, String travel_theme, String travel_title, String travel_startdate,String travel_enddate, String travel_userid) {
         boolean isInsert = false;
-
+        String Tavel_num=null;
         try {
             conn = Common.getConnection();
             String sql = "INSERT INTO TRAVEL_INFO_TB(TRAVEL_NUM,TRAVEL_USERID,TRAVEL_WORLD,TRAVEL_AREA,TRAVEL_STARTDATE,TRAVEL_ENDDATE,TRAVEL_THEME,TRAVEL_TITLE,TRAVEL_WRITEDATE) VALUES('T' || SIRIAL_NUM.nextval,?,?,?,TO_DATE(?,'YYYY-MM-DD'),TO_DATE(?,'YYYY-MM-DD'),?,?,sysdate)";
-
-            pStmt = conn.prepareStatement(sql);
+            String genealColumns[] = {"TRAVEL_NUM"};
+            pStmt = conn.prepareStatement(sql, genealColumns);
             pStmt.setString(1, travel_userid);
             pStmt.setString(2, travelWorld);
             pStmt.setString(3, travelArea);
@@ -126,29 +126,37 @@ public class TravelDAO {
             pStmt.setString(5, travel_enddate);
             pStmt.setString(6, travel_theme);
             pStmt.setString(7, travel_title);
-
+            pStmt.executeUpdate();
             int result = pStmt.executeUpdate();
+            rs = pStmt.getGeneratedKeys();
+            while(rs.next()){
+                Tavel_num=rs.getString(1);
+            }
             if (result == 1) isInsert = true;
         } catch (Exception e) {
             e.printStackTrace();
         }
         Common.close(pStmt);
         Common.close(conn);
-        return isInsert;
+        return Tavel_num;
     }
 
-    public boolean travelInsert2(String travel_map, String travel_pic, String travel_writing) {
+
+    public boolean travelInsert2(String tvNum,String num,String travel_map, String travel_pic, String travel_writing) {
         boolean isInsert = false;
         try {
             conn = Common.getConnection();
             stmt = conn.createStatement();
-            String sql = "INSERT INTO TRAVEL_CONTENT_TB(TRAVEL_MAP,TRAVEL_PIC,TRAVEL_WRITING) VALUES (?,?,?)";
+            String sql = "INSERT INTO TRAVEL_CONTENT_TB(TRAVEL_NUM,D_DAY,TRAVEL_MAP,TRAVEL_PIC,TRAVEL_WRITING) VALUES (?,?,?,?,?)";
             pStmt = conn.prepareStatement(sql);
-            pStmt.setString(1, travel_map);
-            pStmt.setString(2, travel_pic);
-            pStmt.setString(3, travel_writing);
+            pStmt.setString(1, tvNum);
+            pStmt.setString(2, num);
+            pStmt.setString(3, travel_map);
+            pStmt.setString(4, travel_pic);
+            pStmt.setString(5, travel_writing);
             int result = pStmt.executeUpdate();
             if (result == 1) isInsert = true;
+            System.out.println("성공!!!!!!");
         } catch (Exception e) {
             e.printStackTrace();
         }

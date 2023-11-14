@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 public class Travel2VO {
     private String travel_num;
-    private Integer d_day;
+    private String d_day;
     private String travel_pic;
     private String travel_writing;
     private String travel_map;
