@@ -16,7 +16,6 @@ public class TravelDAO {
 
     //여행 공유 일정 출력 구문(메인)
     public List<TravelVO> TravelInfo(String world, String theme) {
-        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
         List<TravelVO> list = new ArrayList<>();
         String sql = null;
         System.out.println("world : " + world);
@@ -24,9 +23,19 @@ public class TravelDAO {
         try {
             conn = Common.getConnection();
             stmt = conn.createStatement();
-            if (world.equals("korea"))
-                sql = "SELECT * FROM TRAVEL_INFO_TB WHERE TRAVEL_WORLD='국내' AND TRAVEL_THEME='" + theme + "'";
-            else sql = "SELECT * FROM TRAVEL_INFO_TB WHERE TRAVEL_WORLD='해외' AND TRAVEL_THEME='" + theme + "'";
+            if (world.equals("All")){
+                if (world.equals("korea"))
+                    sql = "SELECT * FROM TRAVEL_INFO_TB WHERE TRAVEL_WORLD='국내'";
+                else sql = "SELECT * FROM TRAVEL_INFO_TB WHERE TRAVEL_WORLD='해외'";
+            }else{
+                if (world.equals("korea"))
+                    sql = "SELECT * FROM TRAVEL_INFO_TB WHERE TRAVEL_WORLD='국내' AND TRAVEL_THEME ='"+theme+"'";
+                else sql = "SELECT * FROM TRAVEL_INFO_TB WHERE TRAVEL_WORLD='해외' AND TRAVEL_THEME ='"+theme+"'";
+            }
+
+//                sql = "SELECT * FROM TRAVEL_INFO_TB WHERE TRAVEL_WORLD='국내' AND TRAVEL_THEME='" + theme + "'";
+//            else sql = "SELECT * FROM TRAVEL_INFO_TB WHERE TRAVEL_WORLD='해외' AND TRAVEL_THEME='" + theme + "'";
+
             rs = stmt.executeQuery(sql);
             while (rs.next()) {
                 String travel_num = rs.getString("TRAVEL_NUM");
@@ -34,8 +43,8 @@ public class TravelDAO {
                 String travel_theme = rs.getString("TRAVEL_THEME");
                 String travel_area = rs.getString("TRAVEL_AREA");
                 String travel_title = rs.getString("TRAVEL_TITLE");
-                Date travel_startdate = rs.getDate("TRAVEL_STARTDATE");
-                Date travel_enddate = rs.getDate("TRAVEL_ENDDATE");
+                String travel_startdate = rs.getString("TRAVEL_STARTDATE");
+                String travel_enddate = rs.getString("TRAVEL_ENDDATE");
                 String travel_userid = rs.getString("TRAVEL_USERID");
                 Date travel_writedate = rs.getDate("TRAVEL_WRITEDATE");
                 Integer travel_view = rs.getInt("TRAVEL_VIEW");
@@ -66,7 +75,6 @@ public class TravelDAO {
 
     // 여행 정보 리스트 보기
     public List<Travel2VO> TravelContent(String travelNum) {
-        System.out.println("vbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
         List<Travel2VO> list = new ArrayList<>();
         String sql = null;
         System.out.println("travelNum: " + travelNum);
@@ -101,21 +109,23 @@ public class TravelDAO {
         return list;
     }
 
+
     // 게시글 등록하기
-    public boolean travelInsert(TravelVO travelVO) {
+    public boolean travelInsert(String travelWorld, String travelArea, String travel_theme, String travel_title, String travel_startdate,String travel_enddate, String travel_userid) {
         boolean isInsert = false;
+
         try {
             conn = Common.getConnection();
-            stmt = conn.createStatement();
-            String sql = "INSERT INTO TRAVEL_INFO_TB(TRAVEL_NUM,TRAVEL_USERID,TRAVEL_WORLD,TRAVEL_AREA,TRAVEL_STARTDATE,TRAVEL_ENDDATE,TRAVEL_THEME,TRAVEL_TITLE,TRAVEL_WRITEDATE) VALUES('T' || SIRIAL_NUM.nextval,?,?,?,?,?,?,?,SYSDATE)";
+            String sql = "INSERT INTO TRAVEL_INFO_TB(TRAVEL_NUM,TRAVEL_USERID,TRAVEL_WORLD,TRAVEL_AREA,TRAVEL_STARTDATE,TRAVEL_ENDDATE,TRAVEL_THEME,TRAVEL_TITLE,TRAVEL_WRITEDATE) VALUES('T' || SIRIAL_NUM.nextval,?,?,?,TO_DATE(?,'YYYY-MM-DD'),TO_DATE(?,'YYYY-MM-DD'),?,?,sysdate)";
+
             pStmt = conn.prepareStatement(sql);
-            pStmt.setString(1, travelVO.getTravel_userid());
-            pStmt.setString(2, travelVO.getTravel_world());
-            pStmt.setString(3, travelVO.getTravel_area());
-            pStmt.setDate(4, travelVO.getTravel_startdate());
-            pStmt.setDate(5, travelVO.getTravel_enddate());
-            pStmt.setString(6, travelVO.getTravel_theme());
-            pStmt.setString(7, travelVO.getTravel_title());
+            pStmt.setString(1, travel_userid);
+            pStmt.setString(2, travelWorld);
+            pStmt.setString(3, travelArea);
+            pStmt.setString(4, travel_startdate);
+            pStmt.setString(5, travel_enddate);
+            pStmt.setString(6, travel_theme);
+            pStmt.setString(7, travel_title);
 
             int result = pStmt.executeUpdate();
             if (result == 1) isInsert = true;
@@ -127,16 +137,16 @@ public class TravelDAO {
         return isInsert;
     }
 
-    public boolean travelInsert2(Travel2VO travel2VO) {
+    public boolean travelInsert2(String travel_map, String travel_pic, String travel_writing) {
         boolean isInsert = false;
         try {
             conn = Common.getConnection();
             stmt = conn.createStatement();
             String sql = "INSERT INTO TRAVEL_CONTENT_TB(TRAVEL_MAP,TRAVEL_PIC,TRAVEL_WRITING) VALUES (?,?,?)";
             pStmt = conn.prepareStatement(sql);
-            pStmt.setString(1, travel2VO.getTravel_map());
-            pStmt.setString(2, travel2VO.getTravel_pic());
-            pStmt.setString(3, travel2VO.getTravel_writing());
+            pStmt.setString(1, travel_map);
+            pStmt.setString(2, travel_pic);
+            pStmt.setString(3, travel_writing);
             int result = pStmt.executeUpdate();
             if (result == 1) isInsert = true;
         } catch (Exception e) {

@@ -12,8 +12,8 @@ public class TravelVO {
     private String travel_theme;
     private String travel_area;
     private String travel_title;
-    private Date travel_startdate;
-    private Date travel_enddate;
+    private String travel_startdate;
+    private String travel_enddate;
     private String travel_userid;
     private Date travel_writedate;
     private Integer travel_view;

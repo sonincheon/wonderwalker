@@ -8,6 +8,7 @@ import wonderwalker.project.mini.vo.Travel2VO;
 import wonderwalker.project.mini.vo.TravelVO;
 
 import java.util.List;
+import java.util.Map;
 
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -42,31 +43,29 @@ public class TravelController {
     }
 
     @PostMapping("DiyWrite")
-    public ResponseEntity<Boolean> travelinsert(@RequestBody TravelVO travelVO) {
-        System.out.println("travel_num : " + travelVO.getTravel_num());
-        System.out.println("travel_userid : " + travelVO.getTravel_userid());
-        System.out.println("travel_world : " + travelVO.getTravel_world());
-        System.out.println("travel_area : " + travelVO.getTravel_area());
-        System.out.println("travel_startdate : " + travelVO.getTravel_startdate());
-        System.out.println("travel_enddate : " + travelVO.getTravel_enddate());
-        System.out.println("travel_theme : " + travelVO.getTravel_theme());
-        System.out.println("travel_title : " + travelVO.getTravel_title());
-        System.out.println("travel_writedate : " + travelVO.getTravel_writedate());
+        public ResponseEntity<Boolean> travelinsert(@RequestBody Map<String, String> insert) {
+        String travel_userid=insert.get("userId");
+        String travel_world =insert.get("world");
+        String travel_area=insert.get("area");
+        String travel_startdate= insert.get("toDate");
+        String travel_enddate= insert.get("toDate1");
+        String travel_theme=insert.get("theme");
+        String travel_title=insert.get("title");
+
         TravelDAO dao = new TravelDAO();
-        boolean isTrue = dao.travelInsert(travelVO);
-        System.out.println("댓글 등록 결과 : " + isTrue);
-        return new ResponseEntity<>(isTrue, HttpStatus.OK);
+        boolean result = dao.travelInsert(travel_world, travel_area, travel_theme, travel_title, travel_startdate,travel_enddate, travel_userid);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PostMapping("DiyWrite/days")
-    public ResponseEntity<Boolean> travelinsert2(@RequestBody Travel2VO travel2VO) {
-        System.out.println("travel_map : " + travel2VO.getTravel_map());
-        System.out.println("travel_pic : " + travel2VO.getTravel_pic());
-        System.out.println("travel_writing : " + travel2VO.getTravel_writing());
+    public ResponseEntity<Boolean> travelinsert2(@RequestBody Map<String, String> insert2) {
+        System.out.println("inserttravel");
+        String travel_map=insert2.get("url");
+        String travel_pic =insert2.get("file");
+        String travel_writing=insert2.get("content");
         TravelDAO dao = new TravelDAO();
-        boolean isTrue = dao.travelInsert2(travel2VO);
-        System.out.println("댓글 등록 결과 : " + isTrue);
-        return new ResponseEntity<>(isTrue, HttpStatus.OK);
+        boolean result =dao.travelInsert2(travel_map,travel_pic,travel_writing);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
 }
