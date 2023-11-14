@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CourseVO {
-  private Integer course_code;
+  private String course_code;
   private String course_hash;
   private String topic;
   private String course_area;
