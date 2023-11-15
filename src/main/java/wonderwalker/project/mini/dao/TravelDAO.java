@@ -3,6 +3,7 @@ package wonderwalker.project.mini.dao;
 import wonderwalker.project.mini.comon.Common;
 import wonderwalker.project.mini.vo.Travel2VO;
 import wonderwalker.project.mini.vo.TravelVO;
+import wonderwalker.project.mini.vo.UserInfoVO;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -80,6 +81,7 @@ public class TravelDAO {
         System.out.println("travelNum: " + travelNum);
 
         try {
+
             conn = Common.getConnection();
             stmt = conn.createStatement();
             sql = "SELECT * FROM TRAVEL_CONTENT_TB WHERE TRAVEL_NUM = '" + travelNum + "'";
@@ -163,5 +165,45 @@ public class TravelDAO {
         Common.close(pStmt);
         Common.close(conn);
         return isInsert;
+    }
+
+    public List<TravelVO> faveoList(String id) {
+        List<TravelVO> list = new ArrayList<>();
+        try {
+            String sql =" SELECT * FROM FAVOR , TRAVEL_INFO_TB WHERE FAVOR.COURSE_CODE  =  TRAVEL_INFO_TB.TRAVEL_NUM   AND FAVOR.USERID = ?";
+            conn = Common.getConnection();
+            pStmt = conn.prepareStatement(sql);
+//            pStmt.setString(1, type);
+            pStmt.setString(1, id);
+            rs = pStmt.executeQuery();
+            while (rs.next()) {
+                String TRAVEL_WORLD = rs.getString("TRAVEL_WORLD");
+                String TRAVEL_THEME = rs.getString("TRAVEL_THEME");
+                String TRAVEL_AREA = rs.getString("TRAVEL_AREA");
+                String TRAVEL_TITLE = rs.getString("TRAVEL_TITLE");
+                String TRAVEL_STARTDATE = String.valueOf(rs.getDate("TRAVEL_STARTDATE"));
+                String TRAVEL_ENDDATE = String.valueOf(rs.getDate("TRAVEL_ENDDATE"));
+                System.out.println(TRAVEL_WORLD);
+                System.out.println(TRAVEL_TITLE);
+                TravelVO vo = new TravelVO();
+                vo.setTravel_world(TRAVEL_WORLD);
+                vo.setTravel_theme(TRAVEL_THEME);
+                vo.setTravel_area(TRAVEL_AREA);
+                vo.setTravel_title(TRAVEL_TITLE);
+                vo.setTravel_startdate(TRAVEL_STARTDATE);
+                vo.setTravel_enddate(TRAVEL_ENDDATE);
+                list.add(vo);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("에러: " + e.getMessage()); // 에러 메시지 출력
+        } finally {
+            // 자원 해제는 finally 블록에서 수행합니다.
+            Common.close(rs);
+            Common.close(pStmt);
+            Common.close(conn);
+        }
+        System.out.println("list 돌려줌");
+        return list;
     }
 }

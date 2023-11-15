@@ -3,10 +3,7 @@ package wonderwalker.project.mini.dao;
 import wonderwalker.project.mini.comon.Common;
 import wonderwalker.project.mini.vo.CourseVO;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -96,6 +93,50 @@ public class CourseDAO {
         Common.close(conn);
         return courseDetail;
 
+    }
+
+
+    //즐겨찾기 정보가져가기
+    public List<CourseVO> faveoList(String id) {
+        System.out.println("222222222222222");
+        List<CourseVO> list = new ArrayList<>();
+        try {
+            String sql =" SELECT * FROM FAVOR, COURSE WHERE FAVOR.COURSE_CODE = COURSE.COURSE_CODE AND FAVOR.USERID = ?  ";
+            conn = Common.getConnection();
+            pStmt = conn.prepareStatement(sql);
+//            pStmt.setString(1, type);
+            pStmt.setString(1, id);
+            rs = pStmt.executeQuery();
+            while (rs.next()) {
+                String COURSE_WORLD = rs.getString("COURSE_WORLD");
+                String COURSE_AREA = rs.getString("COURSE_AREA");
+                String COURSE_HASH = rs.getString("COURSE_HASH");
+                String TOPIC = rs.getString("TOPIC");
+                String MAIN_IMG =rs.getString("MAIN_IMG");
+
+                System.out.println(   COURSE_WORLD);
+                System.out.println(   COURSE_HASH);
+                System.out.println(   COURSE_AREA);
+
+                CourseVO vo = new CourseVO();
+                vo.setCourse_world(COURSE_WORLD);
+                vo.setCourse_area(COURSE_AREA);
+                vo.setCourse_hash(COURSE_HASH);
+                vo.setTopic(TOPIC);
+                vo.setMain_img(MAIN_IMG);
+                list.add(vo);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("에러: " + e.getMessage()); // 에러 메시지 출력
+        } finally {
+            // 자원 해제는 finally 블록에서 수행합니다.
+            Common.close(rs);
+            Common.close(pStmt);
+            Common.close(conn);
+        }
+        System.out.println("list 돌려줌");
+        return list;
     }
 
 }

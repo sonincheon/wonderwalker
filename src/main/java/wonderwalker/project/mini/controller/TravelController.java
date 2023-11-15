@@ -76,7 +76,14 @@ public class TravelController {
 
 
 
-
+    //즐겨찾기 가져가기
+    @GetMapping("/SelectFavor")
+    public ResponseEntity<List<TravelVO>> SelectFavor(@RequestParam String id) {
+        System.out.println("SelectFavorSelectFavorSelectFavorSelectFavorSelectFavorSelectFavorSelectFavor");
+        TravelDAO dao= new TravelDAO();
+        List<TravelVO> list =dao.faveoList(id);
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
 
 
 

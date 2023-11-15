@@ -93,6 +93,15 @@ public class GoodsController {
     }
 
 
+    //즐겨찾기 가져가기
+    @GetMapping("/SelectFavor")
+    public ResponseEntity<List<GoodsVO>> SelectFavor(@RequestParam String id) {
+        System.out.println("1111111111111111");
+        GoodsDAO dao= new GoodsDAO();
+        List<GoodsVO> list =dao.faveoList(id);
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
 
 
 

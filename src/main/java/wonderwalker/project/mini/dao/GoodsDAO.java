@@ -238,4 +238,51 @@ public class GoodsDAO {
         if(result == 1) return true;
         else return false;
     }
+
+    //즐겨찾기 정보가져가기
+    public List<GoodsVO> faveoList(String id) {
+
+        List<GoodsVO> list = new ArrayList<>();
+        try {
+
+            String sql ="  SELECT * FROM FAVOR, GOODS_TABLE WHERE FAVOR.COURSE_CODE = GOODS_TABLE.ITEM_NUM AND FAVOR.USERID =  ?  ";
+            conn = Common.getConnection();
+            pStmt = conn.prepareStatement(sql);
+//            pStmt.setString(1, type);
+            pStmt.setString(1, id);
+            rs = pStmt.executeQuery();
+            while (rs.next()) {
+                System.out.println("222222222222222");
+                String PRICE = rs.getString("PRICE");
+                System.out.println("333333333333");
+                String TAG = rs.getString("TAG");
+                System.out.println("44444444444444444");
+                String I_NAME = rs.getString("I_NAME");
+                String TITLE = rs.getString("TITLE");
+                String I_MAIN_IMG =rs.getString("I_MAIN_IMG");
+
+                System.out.println(   PRICE);
+                System.out.println(   TAG);
+                System.out.println(   TITLE);
+
+                GoodsVO vo = new GoodsVO();
+                vo.setPrice(PRICE);
+                vo.setTag(TAG);
+                vo.setI_name(I_NAME);
+                vo.setTitle(TITLE);
+                vo.setI_main_img(I_MAIN_IMG);
+                list.add(vo);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("에러: " + e.getMessage()); // 에러 메시지 출력
+        } finally {
+            // 자원 해제는 finally 블록에서 수행합니다.
+            Common.close(rs);
+            Common.close(pStmt);
+            Common.close(conn);
+        }
+        System.out.println("list 돌려줌");
+        return list;
+    }
 }

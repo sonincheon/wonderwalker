@@ -29,4 +29,12 @@ public class CourseControlloer {
         List<CourseVO> list = dao.selectCourseDetail(course_code);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
+
+    //즐겨찾기 가져가기
+    @GetMapping("/SelectFavor")
+    public ResponseEntity<List<CourseVO>> SelectFavor(@RequestParam String id) {
+        CourseDAO dao= new CourseDAO();
+        List<CourseVO> list =dao.faveoList(id);
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
 }
