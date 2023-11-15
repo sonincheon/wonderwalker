@@ -11,6 +11,6 @@ public class Travel2VO {
     private String travel_pic;
     private String travel_writing;
     private String travel_map;
-
+    private int travel_view;
 }
 
