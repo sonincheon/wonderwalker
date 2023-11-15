@@ -29,11 +29,11 @@ public class GoodsDAO {
             if(area.equals("ALL")){
                 if (world.equals("korea"))
                     sql = "SELECT * FROM (SELECT ROWNUM AS NUM, GOODS_TABLE.* FROM GOODS_TABLE WHERE  I_WORLD='국내')WHERE NUM BETWEEN "+count1+" AND "+count2;
-                else sql = "SELECT * FROM (SELECT ROWNUM AS NUM, GOODS_TABLE.* FROM GOODS_TABLE WHERE  I_WORLD='해외 ')WHERE NUM BETWEEN "+count1+" AND "+count2;
+                else sql = "SELECT * FROM (SELECT ROWNUM AS NUM, GOODS_TABLE.* FROM GOODS_TABLE WHERE  I_WORLD='해외')WHERE NUM BETWEEN "+count1+" AND "+count2;
             }else{
                 if (world.equals("korea"))
                     sql = "SELECT * FROM (SELECT ROWNUM AS NUM, GOODS_TABLE.* FROM GOODS_TABLE WHERE  I_WORLD='국내' AND I_AREA = '"+area+"')WHERE NUM BETWEEN "+count1+" AND "+count2;
-                else sql = "SELECT * FROM (SELECT ROWNUM AS NUM, GOODS_TABLE.* FROM GOODS_TABLE WHERE  I_WORLD='해외 ' AND I_AREA = '"+area+"')WHERE NUM BETWEEN "+count1+" AND "+count2;
+                else sql = "SELECT * FROM (SELECT ROWNUM AS NUM, GOODS_TABLE.* FROM GOODS_TABLE WHERE  I_WORLD='해외' AND I_AREA = '"+area+"')WHERE NUM BETWEEN "+count1+" AND "+count2;
             }
             rs = stmt.executeQuery(sql);
             while (rs.next()) {
