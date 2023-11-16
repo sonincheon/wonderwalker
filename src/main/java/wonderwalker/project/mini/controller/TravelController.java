@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://192.168.10.23:3000")
 // 3000번포트로 넘어갔다가 8111번포트로 넘어가면 에러인데 이걸 풀기위해 CrossOrigin으로 선언하여 풀어줌
 @RestController
 
@@ -79,7 +79,11 @@ public class TravelController {
         System.out.println("SelectFavorSelectFavorSelectFavorSelectFavorSelectFavorSelectFavorSelectFavor");
         TravelDAO dao= new TravelDAO();
         List<TravelVO> list =dao.faveoList(id);
+        System.out.println("12312321");
+         System.out.println(   list.get(0).getTravel_title());
         return new ResponseEntity<>(list, HttpStatus.OK);
+
+
     }
 
 

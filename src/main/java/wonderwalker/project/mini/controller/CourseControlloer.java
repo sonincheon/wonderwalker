@@ -8,7 +8,7 @@ import wonderwalker.project.mini.vo.CourseVO;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://192.168.10.23:3000")
 @RestController
 @RequestMapping("/Course")
 public class CourseControlloer {

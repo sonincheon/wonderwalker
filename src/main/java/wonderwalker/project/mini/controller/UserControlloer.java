@@ -9,7 +9,7 @@ import wonderwalker.project.mini.vo.UserInfoVO;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins ="http://192.168.10.23:3000")
 // 3000번포트로 넘어갔다가 8011번포트로 넘어가면 에러인데 이걸 풀기위해 CrossOrigin으로 선언하여 풀어줌
 @RestController
 // restful-API ??? 컨트롤러

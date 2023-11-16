@@ -198,7 +198,7 @@ public class TravelDAO {
     public List<TravelVO> faveoList(String id) {
         List<TravelVO> list = new ArrayList<>();
         try {
-            String sql =" SELECT * FROM FAVOR , TRAVEL_INFO_TB WHERE FAVOR.COURSE_CODE  =  TRAVEL_INFO_TB.TRAVEL_NUM   AND FAVOR.USERID = ?";
+            String sql =" SELECT * FROM FAVOR , TRAVEL_INFO_TB WHERE FAVOR.COURSE_CODE  =  TRAVEL_INFO_TB.TRAVEL_NUM   AND  FAVOR.USERID = ?";
             conn = Common.getConnection();
             pStmt = conn.prepareStatement(sql);
 //            pStmt.setString(1, type);
@@ -211,6 +211,8 @@ public class TravelDAO {
                 String TRAVEL_TITLE = rs.getString("TRAVEL_TITLE");
                 String TRAVEL_STARTDATE = String.valueOf(rs.getDate("TRAVEL_STARTDATE"));
                 String TRAVEL_ENDDATE = String.valueOf(rs.getDate("TRAVEL_ENDDATE"));
+                System.out.println("12312321");
+
                 System.out.println(TRAVEL_WORLD);
                 System.out.println(TRAVEL_TITLE);
                 TravelVO vo = new TravelVO();
